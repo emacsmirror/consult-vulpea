@@ -128,7 +128,7 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
                     :prompt (concat prompt ": ")
                     :require-match require-match
                     :initial initial-prompt
-                    :history 'vulpea-find-history
+                    :history 'minibuffer-history
                     :state (consult-vulpea--file-preview note-table)
                     :category 'vulpea-note
                     :sort t)))
