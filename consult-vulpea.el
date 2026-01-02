@@ -43,9 +43,6 @@
 ;; 2. **Consult-powered grep/find**: Use `consult-vulpea-grep' and
 ;;    `consult-vulpea-find' to search within your vulpea directories
 ;;    with live previews.
-;;
-;; 3. **Buffer source for `consult-buffer'**: Adds a "Vulpea notes"
-;;    source to `consult-buffer' showing buffers visiting vulpea notes.
 
 ;;; Code:
 
@@ -131,7 +128,7 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
                     :prompt (concat prompt ": ")
                     :require-match require-match
                     :initial initial-prompt
-                    :history 'consult-vulpea-buffer-history
+                    :history 'vulpea-find-history
                     :state (consult-vulpea--file-preview note-table)
                     :category 'vulpea-note
                     :sort t)))
