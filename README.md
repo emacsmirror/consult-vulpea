@@ -6,7 +6,6 @@ Use [Consult](https://github.com/minad/consult) in tandem with [Vulpea](https://
 
 - **Live previews**: When selecting notes via `vulpea-find` or `vulpea-insert`, get a live preview of the note file as you navigate through candidates.
 - **Consult-powered grep/find**: Use `consult-vulpea-grep` and `consult-vulpea-find` to search within your vulpea directories with live previews.
-- **Buffer source for `consult-buffer`**: Adds a "Vulpea notes" source showing buffers visiting vulpea notes (narrow with `n`).
 
 ## Installation
 

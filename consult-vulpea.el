@@ -75,18 +75,6 @@ Common choices are `consult-grep' and `consult-ripgrep'."
   :type 'function
   :group 'consult-vulpea)
 
-;;;; Faces
-
-(defface consult-vulpea-buffer
-  '((t :inherit font-lock-string-face))
-  "Face for Vulpea buffers in `consult-buffer'."
-  :group 'consult-vulpea)
-
-;;;; Internal variables
-
-(defvar consult-vulpea-buffer-history nil
-  "History for `consult-vulpea' buffer selection.")
-
 ;;;; Helper functions
 
 (defun consult-vulpea--file-preview (note-table)
@@ -172,42 +160,15 @@ Uses `consult-vulpea-find-command' (default: `consult-find')."
                       (list org-directory)))))
     (funcall-interactively consult-vulpea-find-command dir)))
 
-;;;; Buffer source for consult-buffer
-
-(declare-function vulpea-db-get-file-notes "vulpea-db")
-
-(defun consult-vulpea--buffers ()
-  "Return list of buffer names visiting vulpea notes."
-  (delq nil
-        (mapcar
-         (lambda (buffer)
-           (when-let* ((file (buffer-file-name buffer))
-                       ((buffer-live-p buffer))
-                       ((vulpea-db-get-file-notes file)))
-             (buffer-name buffer)))
-         (buffer-list))))
-
-(defvar consult-vulpea-buffer-source
-  `(:name "Vulpea notes"
-    :narrow ?n
-    :category buffer
-    :face consult-vulpea-buffer
-    :history consult-vulpea-buffer-history
-    :action ,#'switch-to-buffer
-    :state ,#'consult--buffer-state
-    :items ,#'consult-vulpea--buffers)
-  "Source for `consult-buffer' to list buffers visiting vulpea notes.")
-
 ;;;; Minor mode
 
 ;;;###autoload
 (define-minor-mode consult-vulpea-mode
   "Use Consult in tandem with Vulpea.
 
-When enabled, this mode:
-- Replaces `vulpea-select-from' with a consult-powered version
-  that provides live previews when selecting notes.
-- Adds vulpea buffer sources to `consult-buffer'."
+When enabled, this mode replaces `vulpea-select-from' with a
+consult-powered version that provides live previews when
+selecting notes."
   :global t
   :lighter " cv"
   :group 'consult-vulpea
@@ -216,13 +177,9 @@ When enabled, this mode:
         ;; Ensure consult and vulpea-select are fully loaded
         (require 'consult)
         (require 'vulpea-select)
-        ;; Add buffer source to consult-buffer
-        (add-to-list 'consult-buffer-sources 'consult-vulpea-buffer-source :append)
         ;; Override vulpea-select-from with our consult version
         (advice-add #'vulpea-select-from
                     :override #'consult-vulpea-select-from))
-    ;; Remove buffer source
-    (setq consult-buffer-sources (delq 'consult-vulpea-buffer-source consult-buffer-sources))
     ;; Remove our advice
     (advice-remove #'vulpea-select-from #'consult-vulpea-select-from)))
 
