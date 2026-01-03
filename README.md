@@ -81,6 +81,7 @@ Add to `config.el`:
 |----------|---------|-------------|
 | `consult-vulpea-grep-command` | `consult-ripgrep` | Grep command to use (can also be `consult-grep`) |
 | `consult-vulpea-find-command` | `consult-find` | Find command to use |
+| `consult-vulpea-preview-key` | `consult-preview-key` | Key to trigger preview, defaults to consult's global setting |
 
 ## How it works
 
@@ -94,6 +95,7 @@ When `consult-vulpea-mode` is enabled, the package advises `vulpea-select-from` 
 
 ## Related
 
+- [consult-org-roam](https://github.com/jgru/consult-org-roam) — Similar integration for [org-roam](https://github.com/org-roam/org-roam)
 - [consult-denote](https://github.com/protesilaos/consult-denote) — Similar integration for [Denote](https://github.com/protesilaos/denote)
 
 ## License
