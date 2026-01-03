@@ -1,6 +1,6 @@
 ;;; consult-vulpea.el --- Use Consult in tandem with Vulpea -*- lexical-binding: t -*-
 
-;; Copyright (C) 2026
+;; Copyright (C) 2026 Fabrizio Contigiani
 
 ;; Author: Fabrizio Contigiani <fabcontigiani@gmail.com>
 ;; Maintainer: Fabrizio Contigiani <fabcontigiani@gmail.com>
