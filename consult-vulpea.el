@@ -103,9 +103,6 @@ PROMPT is the message to present.
 REQUIRE-MATCH when non-nil means user must select an existing note.
 INITIAL-PROMPT is the initial input for the prompt.
 EXPAND-ALIASES when non-nil expands note aliases for completion."
-  ;; Ensure consult is loaded (important when called via advice before
-  ;; the package is fully loaded due to autoloads)
-  (require 'consult)
   (let* ((expanded-notes (if expand-aliases
                              (seq-mapcat #'vulpea-note-expand-aliases notes)
                            notes))
@@ -171,9 +168,6 @@ selecting notes."
   :group 'consult-vulpea
   (if consult-vulpea-mode
       (progn
-        ;; Ensure consult and vulpea-select are fully loaded
-        (require 'consult)
-        (require 'vulpea-select)
         ;; Override vulpea-select-from with our consult version
         (advice-add #'vulpea-select-from
                     :override #'consult-vulpea-select-from))
