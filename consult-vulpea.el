@@ -139,19 +139,21 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
 ;;;###autoload
 (defun consult-vulpea-grep ()
   "Search vulpea notes using grep with live preview.
-Uses `consult-vulpea-grep-command' (default: `consult-ripgrep')."
+Uses `consult-vulpea-grep-command'. Searches all directories 
+in `vulpea-db-sync-directories'."
   (interactive)
-  (let ((dir (car (or (bound-and-true-p vulpea-db-sync-directories)
-                      (list org-directory)))))
+  (let ((dir (or (bound-and-true-p vulpea-db-sync-directories)
+                 (list org-directory))))
     (funcall-interactively consult-vulpea-grep-command dir)))
 
 ;;;###autoload
 (defun consult-vulpea-find ()
   "Find vulpea note files using find with live preview.
-Uses `consult-vulpea-find-command' (default: `consult-find')."
+Uses `consult-vulpea-find-command'. Searches all directories 
+in `vulpea-db-sync-directories'."
   (interactive)
-  (let ((dir (car (or (bound-and-true-p vulpea-db-sync-directories)
-                      (list org-directory)))))
+  (let ((dir (or (bound-and-true-p vulpea-db-sync-directories)
+                 (list org-directory))))
     (funcall-interactively consult-vulpea-find-command dir)))
 
 ;;;; Minor mode
