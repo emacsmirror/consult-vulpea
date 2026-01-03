@@ -82,14 +82,17 @@ Defaults to `consult-preview-key'."
 
 ;;;; Helper functions
 
-(defun consult-vulpea--file-preview (note-table)
+(defun consult-vulpea--note-preview ()
   "Create a preview function for vulpea notes.
-NOTE-TABLE is a hash table mapping candidate strings to vulpea notes."
-  (let ((preview (consult--file-preview)))
+Expects CAND to be a `vulpea-note' object (via :lookup)."
+  (let ((open (consult--temporary-files))
+        (preview (consult--buffer-preview)))
     (lambda (action cand)
-      (let* ((note (and cand (gethash (substring-no-properties cand) note-table)))
-             (file (and note (vulpea-note-path note))))
-        (funcall preview action file)))))
+      (when (eq action 'exit)
+        (funcall open))
+      (when (and (eq action 'preview) (vulpea-note-p cand))
+        (funcall preview action
+                 (funcall open (vulpea-note-path cand)))))))
 
 ;;;; Core selection function
 
@@ -114,33 +117,29 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
   (let* ((expanded-notes (if expand-aliases
                              (seq-mapcat #'vulpea-note-expand-aliases notes)
                            notes))
-         ;; Build hash table for fast lookup (avoids text property issues)
-         (note-table (make-hash-table :test #'equal))
+         ;; Build candidates as alist: (description . note)
          (candidates
           (mapcar
            (lambda (note)
-             (let ((key (vulpea-select-describe note)))
-               (puthash (substring-no-properties key) note note-table)
-               key))
+             (cons (vulpea-select-describe note) note))
            expanded-notes))
-         ;; Set default-directory for file preview to work correctly
-         ;; (following consult-denote's approach)
-         (default-directory (or (car (bound-and-true-p vulpea-db-sync-directories))
-                                (bound-and-true-p org-directory)
-                                default-directory))
-         (selected (consult--read
-                    candidates
-                    :prompt (concat prompt ": ")
-                    :require-match require-match
-                    :initial initial-prompt
-                    :history 'minibuffer-history
-                    :state (consult-vulpea--file-preview note-table)
-                    :preview-key consult-vulpea-preview-key
-                    :category 'vulpea-note
-                    :sort t)))
-    (or (and selected (gethash (substring-no-properties selected) note-table))
+         (note (consult--read
+                candidates
+                :prompt (concat prompt ": ")
+                :require-match require-match
+                :initial initial-prompt
+                :history 'minibuffer-history
+                :state (consult-vulpea--note-preview)
+                :preview-key consult-vulpea-preview-key
+                :category 'vulpea-note
+                :sort t
+                ;; :lookup returns the note object from alist, making it
+                ;; available to :state for preview and as the return value
+                :lookup (lambda (selected candidates &rest _)
+                          (cdr (assoc selected candidates))))))
+    (or note
         (make-vulpea-note
-         :title (substring-no-properties (or selected initial-prompt ""))
+         :title (substring-no-properties (or initial-prompt ""))
          :level 0))))
 
 ;;;; Commands
