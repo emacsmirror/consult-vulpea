@@ -119,7 +119,8 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
          (candidates
           (mapcar
            (lambda (note)
-             (let ((key (vulpea-select-describe note)))
+             ;; Use describe-fn for candidate (title only, no annotation)
+             (let ((key (funcall vulpea-select-describe-fn note)))
                (puthash (substring-no-properties key) note note-table)
                key))
            expanded-notes))
@@ -136,6 +137,9 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
                     :history 'minibuffer-history
                     :state (consult-vulpea--file-preview note-table)
                     :preview-key consult-vulpea-preview-key
+                    :annotate (lambda (cand)
+                                (when-let ((note (gethash (substring-no-properties cand) note-table)))
+                                  (funcall vulpea-select-annotate-fn note)))
                     :category 'vulpea-note
                     :sort t)))
     (or (and selected (gethash (substring-no-properties selected) note-table))
