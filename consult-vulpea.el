@@ -72,6 +72,14 @@ Common choices are `consult-grep' and `consult-ripgrep'."
   :type 'function
   :group 'consult-vulpea)
 
+(defcustom consult-vulpea-preview-key consult-preview-key
+  "Preview key for vulpea note selection.
+Defaults to `consult-preview-key'."
+  :type '(choice (const :tag "Any key" any)
+                 (const :tag "No preview" nil)
+                 key-sequence)
+  :group 'consult-vulpea)
+
 ;;;; Helper functions
 
 (defun consult-vulpea--file-preview (note-table)
@@ -127,6 +135,7 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
                     :initial initial-prompt
                     :history 'minibuffer-history
                     :state (consult-vulpea--file-preview note-table)
+                    :preview-key consult-vulpea-preview-key
                     :category 'vulpea-note
                     :sort t)))
     (or (and selected (gethash (substring-no-properties selected) note-table))
