@@ -5,7 +5,7 @@
 ;; Author: Fabrizio Contigiani <fabcontigiani@gmail.com>
 ;; Maintainer: Fabrizio Contigiani <fabcontigiani@gmail.com>
 ;; URL: https://github.com/fabcontigiani/consult-vulpea
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "28.1") (vulpea "2.0.0") (consult "2.2"))
 ;; Keywords: convenience, notes, vulpea
 
