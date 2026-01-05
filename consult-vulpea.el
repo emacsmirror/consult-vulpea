@@ -123,6 +123,8 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
            (lambda (note)
              (cons (vulpea-select-describe note) note))
            expanded-notes))
+         ;; Track user's raw input for new note creation
+         (user-input nil)
          (note (consult--read
                 candidates
                 :prompt (concat prompt ": ")
@@ -134,13 +136,21 @@ EXPAND-ALIASES when non-nil expands note aliases for completion."
                 :category 'vulpea-note
                 :sort t
                 ;; :lookup returns the note object from alist, making it
-                ;; available to :state for preview and as the return value
+                ;; available to :state for preview and as the return value.
+                ;; Also captures raw input for new note creation.
                 :lookup (lambda (selected candidates &rest _)
+                          (setq user-input selected)
                           (cdr (assoc selected candidates))))))
     (or note
-        (make-vulpea-note
-         :title (substring-no-properties (or initial-prompt ""))
-         :level 0))))
+        (let ((title (or (and user-input
+                              (not (string-empty-p (string-trim user-input)))
+                              (substring-no-properties user-input))
+                         (and initial-prompt
+                              (not (string-empty-p (string-trim initial-prompt)))
+                              (substring-no-properties initial-prompt)))))
+          (make-vulpea-note
+           :title (or title "")
+           :level 0)))))
 
 ;;;; Commands
 
