@@ -1,5 +1,7 @@
 # consult-vulpea
 
+[![MELPA](https://melpa.org/packages/consult-vulpea-badge.svg)](https://melpa.org/#/consult-vulpea)
+
 Use [Consult](https://github.com/minad/consult) in tandem with [Vulpea](https://github.com/d12frosted/vulpea).
 
 ## Features
