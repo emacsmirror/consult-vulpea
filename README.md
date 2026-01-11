@@ -9,57 +9,30 @@ Use [Consult](https://github.com/minad/consult) in tandem with [Vulpea](https://
 
 ## Installation
 
-### Manual
-
-Clone this repository and add to your `load-path`:
-
-```elisp
-(add-to-list 'load-path "/path/to/consult-vulpea")
-(require 'consult-vulpea)
-(consult-vulpea-mode 1)
-```
-
-### package-vc (Emacs 29+)
-
-```elisp
-(package-vc-install "https://github.com/fabcontigiani/consult-vulpea")
-(require 'consult-vulpea)
-(consult-vulpea-mode 1)
-```
-
-### use-package with package-vc (Emacs 30+)
+consult-vulpea is available on [MELPA](https://melpa.org/#/consult-vulpea).
 
 ```elisp
 (use-package consult-vulpea
-  :vc (:url "https://github.com/fabcontigiani/consult-vulpea")
+  :ensure t
   :after vulpea
   :config
   (consult-vulpea-mode 1))
 ```
+
+Or install manually with `M-x package-install RET consult-vulpea RET`.
 
 ### Doom Emacs
 
 Add to `packages.el`:
 
 ```elisp
-(package! consult-vulpea
-  :recipe (:host github :repo "fabcontigiani/consult-vulpea"))
+(package! consult-vulpea)
 ```
 
 Add to `config.el`:
 
 ```elisp
 (use-package! consult-vulpea
-  :after vulpea
-  :config
-  (consult-vulpea-mode 1))
-```
-
-### Elpaca
-
-```elisp
-(use-package consult-vulpea
-  :ensure (:host github :repo "fabcontigiani/consult-vulpea")
   :after vulpea
   :config
   (consult-vulpea-mode 1))
